@@ -15,16 +15,13 @@ export const submitForm = async (formData) => {
       throw new Error(errorData.detail || 'Ошибка при отправке формы');
     }
 
-    // Получаем временные ссылки на скачивание
-    const data = await response.json();
+    // Получаем HTML-страницу для скачивания
+    const htmlContent = await response.text();
     
-    if (!data.squad_archive || !data.total_archive) {
-      throw new Error('Не удалось получить ссылки на скачивание');
-    }
-
-    // Открываем обе ссылки в новых вкладках
-    window.open(data.squad_archive, '_blank');
-    window.open(data.total_archive, '_blank');
+    // Создаем новую вкладку с HTML-страницей
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    window.open(url, '_blank');
 
     return { success: true };
   } catch (error) {
