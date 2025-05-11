@@ -15,15 +15,16 @@ export const submitForm = async (formData) => {
       throw new Error(errorData.detail || 'Ошибка при отправке формы');
     }
 
-    // Получаем временную ссылку на скачивание
+    // Получаем временные ссылки на скачивание
     const data = await response.json();
     
-    if (!data.download_url) {
-      throw new Error('Не удалось получить ссылку на скачивание');
+    if (!data.squad_archive || !data.total_archive) {
+      throw new Error('Не удалось получить ссылки на скачивание');
     }
 
-    // Открываем ссылку в новой вкладке
-    window.open(data.download_url, '_blank');
+    // Открываем обе ссылки в новых вкладках
+    window.open(data.squad_archive, '_blank');
+    window.open(data.total_archive, '_blank');
 
     return { success: true };
   } catch (error) {

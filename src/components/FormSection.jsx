@@ -42,7 +42,7 @@ export default function FormSection() {
       await submitForm(form);
       setSnackbar({
         open: true,
-        message: 'Архив успешно скачан!',
+        message: 'Архивы успешно открыты для скачивания!',
         severity: 'success',
       });
       // Очищаем форму после успешной отправки
