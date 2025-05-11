@@ -2,7 +2,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export const submitForm = async (formData) => {
   try {
-    const response = await fetch(`${API_URL}/api/codes/${formData.promocode}/use`, {
+    const response = await fetch(`${API_URL}/codes/${formData.promocode}/use`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
