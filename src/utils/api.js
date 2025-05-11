@@ -2,7 +2,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export const submitForm = async (formData) => {
   try {
-    const response = await fetch(`${API_URL}/codes/${formData.promocode}/use`, {
+    const response = await fetch(`${API_URL}/api/codes/${formData.promocode}/use`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,18 +15,15 @@ export const submitForm = async (formData) => {
       throw new Error(errorData.detail || 'Ошибка при отправке формы');
     }
 
-    // Получаем blob с архивом
-    const blob = await response.blob();
+    // Получаем временную ссылку на скачивание
+    const data = await response.json();
     
-    // Создаем ссылку для скачивания
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `shift_${formData.shift}_squad_${formData.group}.zip`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    if (!data.download_url) {
+      throw new Error('Не удалось получить ссылку на скачивание');
+    }
+
+    // Открываем ссылку в новой вкладке
+    window.open(data.download_url, '_blank');
 
     return { success: true };
   } catch (error) {
